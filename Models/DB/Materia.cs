@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SanJoseEstudiantes.Models.DB;
 
-public partial class Materium
+public partial class Materia
 {
     public int MateriaId { get; set; }
 
