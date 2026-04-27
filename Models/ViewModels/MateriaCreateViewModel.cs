@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SanJoseEstudiantes.Models.ViewModels
+namespace ColegioSanJose.Models.ViewModels
 {
     public class MateriaViewModel
     {

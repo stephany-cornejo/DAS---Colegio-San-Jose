@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SanJoseEstudiantes.Models.DB;
+namespace ColegioSanJose.Models.DB;
 
 public partial class Expediente
 {

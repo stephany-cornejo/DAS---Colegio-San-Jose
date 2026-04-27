@@ -1,7 +1,6 @@
-using SanJoseEstudiantes.Models.ViewModels;
 using System.ComponentModel.DataAnnotations;
 
-namespace SanJoseEstudiantes.Models.ViewModels
+namespace ColegioSanJose.Models.ViewModels
 {
  public class ExpedienteCreateViewModel
  {

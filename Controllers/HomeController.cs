@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SanJoseEstudiantes.Models;
-using SanJoseEstudiantes.Models.DB;
-using SanJoseEstudiantes.Models.ViewModels;
+using ColegioSanJose.Models;
+using ColegioSanJose.Models.DB;
+using ColegioSanJose.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
