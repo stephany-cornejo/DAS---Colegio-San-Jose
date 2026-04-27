@@ -1,6 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ColegioSanJose.Models;
+using SanJoseEstudiantes.Models;
+using SanJoseEstudiantes.Models.DB;
+using SanJoseEstudiantes.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ColegioSanJose.Controllers;
 
