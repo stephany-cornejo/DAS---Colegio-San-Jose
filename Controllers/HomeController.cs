@@ -11,15 +11,18 @@ namespace ColegioSanJose.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ColegioSanJoseContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ColegioSanJoseContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
     {
-        return View();
+        var expedientes = _context.Expedientes.Include(e => e.Alumno).Include(e => e.Materia).ToList();
+        return View(expedientes);
     }
 
     public IActionResult Privacy()

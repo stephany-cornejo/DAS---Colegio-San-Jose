@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using ColegioSanJose.Models.DB;
 
-namespace SanJoseEstudiantes.Models.DB;
+namespace ColegioSanJose.Models.DB;
 
 public partial class ColegioSanJoseContext : DbContext
 {

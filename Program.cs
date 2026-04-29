@@ -1,7 +1,10 @@
+using ColegioSanJose.Models.DB;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ColegioSanJoseContext>();
 
 var app = builder.Build();
 
