@@ -21,8 +21,159 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var expedientes = _context.Expedientes.Include(e => e.Alumno).Include(e => e.Materia).ToList();
-        return View(expedientes);
+        List<Expediente> off = new List<Expediente>();
+        using (var bd = new Models.DB.ColegioSanJoseContext())
+        {
+            off = (from t in bd.Expedientes
+               select new Expediente
+                       
+            {
+            ExtpedienteId = t.ExtpedienteId,
+            Alumno = new Alumno { Nombre = t.Alumno.Nombre + " " + t.Alumno.Apellido},
+            Materia = new Materia { NombreMateria = t.Materia.NombreMateria },
+            NotaFinal = t.NotaFinal,
+            Observaciones = t.Observaciones
+            }).ToList();
+
+            }
+            return View(off);
+        }
+
+    public ActionResult NuevoExpediente()
+    {
+            
+        using (var db = new ColegioSanJoseContext())
+        {
+            var alumnos = db.Alumnos.Select(a => new { a.AlumnoId, Name = a.Nombre + " " + a.Apellido }).ToList();
+            var materias = db.Materia.Select(m => new { m.MateriaId, m.NombreMateria }).ToList();
+
+            ViewBag.Alumnos = new SelectList(alumnos, "AlumnoId", "Name");
+            ViewBag.Materias = new SelectList(materias, "MateriaId", "NombreMateria");
+        }
+        return View();
+    }
+
+    [HttpPost]
+    public ActionResult NuevoExpediente(ExpedienteCreateViewModel model)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+                {
+                    var expediente = new Expediente
+                    {
+                        AlumnoId = model.AlumnoId,
+                        MateriaId = model.MateriaId,
+                        NotaFinal = model.NotaFinal,
+                        Observaciones = model.Observaciones
+                    };
+
+                    db.Expedientes.Add(expediente);
+                    db.SaveChanges();
+                } 
+            }
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public IActionResult Editar(int id)
+    {
+        Expediente model = new Expediente();
+
+        using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+        {
+            var oTabla = db.Expedientes.Include(e => e.Alumno).Include(e => e.Materia).FirstOrDefault(e => e.ExtpedienteId == id);
+            if (oTabla == null)
+            {
+                return NotFound();  
+            }
+            model.ExtpedienteId = oTabla.ExtpedienteId;
+            model.Alumno = new Alumno
+            {
+                Nombre = oTabla.Alumno.Nombre,
+                Apellido = oTabla.Alumno.Apellido,
+                Grado = oTabla.Alumno.Grado,
+                FechaNacimiento = oTabla.Alumno.FechaNacimiento
+            };
+            model.Materia = new Materia
+            {
+                NombreMateria = oTabla.Materia.NombreMateria,
+                Docente = oTabla.Materia.Docente
+            };
+                model.NotaFinal = oTabla.NotaFinal;
+                model.Observaciones = oTabla.Observaciones;
+            }
+            return View("EditarExpediente", model);
+        }
+
+    [HttpPost]
+    public IActionResult Actualizar(Expediente model)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+                {
+                    var viewnew = db.Expedientes.FirstOrDefault(e => e.ExtpedienteId == model.ExtpedienteId);
+
+                    if (viewnew != null)
+                    {
+                        viewnew.NotaFinal = model.NotaFinal;
+                        viewnew.Observaciones = model.Observaciones;
+
+                        db.SaveChanges();
+                    }
+                }
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult Eliminar(int d)
+    {
+        Expediente model = new Expediente();
+
+        using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+        {
+            try
+            {
+                var oTabla = db.Expedientes.Find(d);
+                if (oTabla != null)
+                {
+                    db.Expedientes.Remove(oTabla);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        return Redirect("/Home/");
+    }
+    public IActionResult Estadisticas()
+    {
+        using (var db = new ColegioSanJoseContext())
+        {
+                
+        }
+        return View();
     }
 
     public IActionResult Privacy()
