@@ -50,6 +50,8 @@ public partial class ColegioSanJoseContext : DbContext
 
             entity.ToTable("Expediente");
 
+            entity.Property(e => e.ExtpedienteId).UseIdentityColumn();
+
             entity.Property(e => e.NotaFinal).HasColumnType("decimal(4, 2)");
             entity.Property(e => e.Observaciones)
                 .HasMaxLength(255)
