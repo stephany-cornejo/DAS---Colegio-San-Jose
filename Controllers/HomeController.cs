@@ -117,27 +117,24 @@ public class HomeController : Controller
     {
         try
         {
-            if (ModelState.IsValid)
+            using (ColegioSanJoseContext db = new ColegioSanJoseContext())
             {
-                using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+                var viewnew = db.Expedientes.FirstOrDefault(e => e.ExtpedienteId == model.ExtpedienteId);
+
+                if (viewnew != null)
                 {
-                    var viewnew = db.Expedientes.FirstOrDefault(e => e.ExtpedienteId == model.ExtpedienteId);
+                    viewnew.NotaFinal = model.NotaFinal;
+                    viewnew.Observaciones = model.Observaciones;
 
-                    if (viewnew != null)
-                    {
-                        viewnew.NotaFinal = model.NotaFinal;
-                        viewnew.Observaciones = model.Observaciones;
-
-                        db.SaveChanges();
-                    }
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                else
+                {
+                    return NotFound();
+                }
             }
-
-            return View(model);
         }
-
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
