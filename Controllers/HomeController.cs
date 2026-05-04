@@ -62,6 +62,24 @@ public class HomeController : Controller
             {
                 using (ColegioSanJoseContext db = new ColegioSanJoseContext())
                 {
+                    // Verificar si ya existe un registro con el mismo alumno y materia
+                    var expedienteExistente = db.Expedientes
+                        .FirstOrDefault(e => e.AlumnoId == model.AlumnoId && e.MateriaId == model.MateriaId);
+
+                    if (expedienteExistente != null)
+                    {
+                        ModelState.AddModelError("", "Registro ya existente. Edite o cree uno nuevo.");
+                        
+                        // Cargar los datos para los dropdowns nuevamente
+                        var alumnos = db.Alumnos.Select(a => new { a.AlumnoId, Name = a.Nombre + " " + a.Apellido }).ToList();
+                        var materias = db.Materia.Select(m => new { m.MateriaId, m.NombreMateria }).ToList();
+
+                        ViewBag.Alumnos = new SelectList(alumnos, "AlumnoId", "Name");
+                        ViewBag.Materias = new SelectList(materias, "MateriaId", "NombreMateria");
+                        
+                        return View(model);
+                    }
+
                     var expediente = new Expediente
                     {
                         AlumnoId = model.AlumnoId,
@@ -72,9 +90,21 @@ public class HomeController : Controller
 
                     db.Expedientes.Add(expediente);
                     db.SaveChanges();
+                    return RedirectToAction("Index");
                 } 
             }
-            return RedirectToAction("Index");
+            else
+            {
+                using (var db = new ColegioSanJoseContext())
+                {
+                    var alumnos = db.Alumnos.Select(a => new { a.AlumnoId, Name = a.Nombre + " " + a.Apellido }).ToList();
+                    var materias = db.Materia.Select(m => new { m.MateriaId, m.NombreMateria }).ToList();
+
+                    ViewBag.Alumnos = new SelectList(alumnos, "AlumnoId", "Name");
+                    ViewBag.Materias = new SelectList(materias, "MateriaId", "NombreMateria");
+                }
+                return View(model);
+            }
         }
         catch (Exception ex)
         {
