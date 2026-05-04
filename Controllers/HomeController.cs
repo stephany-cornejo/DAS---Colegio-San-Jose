@@ -62,7 +62,6 @@ public class HomeController : Controller
             {
                 using (ColegioSanJoseContext db = new ColegioSanJoseContext())
                 {
-                    // Verificar si ya existe un registro con el mismo alumno y materia
                     var expedienteExistente = db.Expedientes
                         .FirstOrDefault(e => e.AlumnoId == model.AlumnoId && e.MateriaId == model.MateriaId);
 
@@ -70,7 +69,6 @@ public class HomeController : Controller
                     {
                         ModelState.AddModelError("", "Registro ya existente. Edite o cree uno nuevo.");
                         
-                        // Cargar los datos para los dropdowns nuevamente
                         var alumnos = db.Alumnos.Select(a => new { a.AlumnoId, Name = a.Nombre + " " + a.Apellido }).ToList();
                         var materias = db.Materia.Select(m => new { m.MateriaId, m.NombreMateria }).ToList();
 
