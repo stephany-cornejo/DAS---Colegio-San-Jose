@@ -1,0 +1,65 @@
+@model IEnumerable<ColegioSanJose.Models.DB.Alumno>
+@{
+    ViewData["Title"] = "Alumnos";
+}
+
+<h1>Alumnos</h1>
+<p>
+    <a class="btn btn-primary" asp-action="NuevoAlumno" asp-controller="Home">Nuevo Alumno</a>
+</p>
+
+<div class="row">
+     <div class="col-md-12">
+         <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">FechaNacimiento</th>
+                    <th scope="col">Grado</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var alumno in Model)
+                {
+                    <tr>
+                        <td>@alumno.AlumnoId</td>
+                        <td>@alumno.Nombre</td>
+                        <td>@alumno.Apellido</td>
+                        <td>@alumno.FechaNacimiento</td>
+                        <td>@alumno.Grado</td>
+                        <td>
+                            <a class="btn btn-sm btn-secondary" asp-action="EditarAlumno" asp-route-id="@alumno.AlumnoId">Editar</a>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarAlumnoModal" data-alumno-id="@alumno.AlumnoId" data-alumno-nombre="@alumno.Nombre">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+         </table>
+     </div>
+</div>
+
+<div class="modal fade" id="eliminarAlumnoModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Eliminar un alumno también borra todos sus expedientes relacionados</strong></p>
+        <p>¿Está seguro de que desea eliminar al alumno <strong id="Nombre"></strong> <strong id="Apellido"></strong></>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <form id="eliminarForm" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -74,6 +74,8 @@ public partial class ColegioSanJoseContext : DbContext
 
             entity.ToTable("Materia");
 
+            entity.Property(e => e.MateriaId).UseIdentityColumn();
+
             entity.Property(e => e.Docente)
                 .HasMaxLength(100)
                 .IsUnicode(false);
