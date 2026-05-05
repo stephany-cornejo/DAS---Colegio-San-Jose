@@ -149,6 +149,118 @@ public class HomeController : Controller
         return RedirectToAction("Materias");
     }
 
+    public IActionResult Alumnos()
+    {
+        List<Alumno> alumnos = new List<Alumno>();
+        using (var bd = new Models.DB.ColegioSanJoseContext())
+        {
+            alumnos = bd.Alumnos.ToList();
+        }
+        return View(alumnos);
+    }
+
+    public ActionResult NuevoAlumno()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public ActionResult NuevoAlumno(Alumno model)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+                {
+                    db.Alumnos.Add(model);
+                    db.SaveChanges();
+                    return RedirectToAction("Alumnos");
+                }
+            }
+            return View(model);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public IActionResult EditarAlumno(int id)
+    {
+        Alumno model = new Alumno();
+
+        using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+        {
+            var alumno = db.Alumnos.FirstOrDefault(a => a.AlumnoId == id);
+            if (alumno == null)
+            {
+                return NotFound();
+            }
+            model = alumno;
+        }
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult ActualizarAlumno(Alumno model)
+    {
+        try
+        {
+            using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+            {
+                var alumno = db.Alumnos.FirstOrDefault(a => a.AlumnoId == model.AlumnoId);
+
+                if (alumno != null)
+                {
+                    alumno.Nombre = model.Nombre;
+                    alumno.Apellido = model.Apellido;
+                    alumno.FechaNacimiento = model.FechaNacimiento;
+                    alumno.Grado = model.Grado;
+
+                    db.SaveChanges();
+                    return RedirectToAction("Alumnos");
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpPost]
+    public IActionResult EliminarAlumno(int id)
+    {
+        using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+        {
+            try
+            {
+                var alumno = db.Alumnos.FirstOrDefault(a => a.AlumnoId == id);
+                if (alumno != null)
+                {
+                    var expedientes = db.Expedientes.Where(e => e.AlumnoId == id).ToList();
+                    foreach (var expediente in expedientes)
+                    {
+                        db.Expedientes.Remove(expediente);
+                    }
+                    
+                    db.Alumnos.Remove(alumno);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        return RedirectToAction("Alumnos");
+    }
+
     public ActionResult NuevoExpediente()
     {
             

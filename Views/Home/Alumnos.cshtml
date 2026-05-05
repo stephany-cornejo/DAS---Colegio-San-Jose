@@ -48,11 +48,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="eliminarModalLabel">Confirmar eliminación</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <p><strong>Eliminar un alumno también borra todos sus expedientes relacionados</strong></p>
-        <p>¿Está seguro de que desea eliminar al alumno <strong id="Nombre"></strong> <strong id="Apellido"></strong></>?</p>
+        <p>¿Está seguro de que desea eliminar al alumno <strong id="alumnoNombre"></strong>?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -63,3 +64,18 @@
     </div>
   </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('eliminarAlumnoModal').addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var alumnoId = button.getAttribute('data-alumno-id');
+            var alumnoNombre = button.getAttribute('data-alumno-nombre');
+            
+            document.getElementById('alumnoNombre').textContent = alumnoNombre;
+            
+            var form = document.getElementById('eliminarForm');
+            form.action = '/Home/EliminarAlumno/' + alumnoId;
+        });
+    </script>
+}
