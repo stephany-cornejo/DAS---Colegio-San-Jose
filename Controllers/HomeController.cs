@@ -39,6 +39,16 @@ public class HomeController : Controller
             return View(off);
         }
 
+    public IActionResult Materias()
+    {
+        List<Materia> materias = new List<Materia>();
+        using (var bd = new Models.DB.ColegioSanJoseContext())
+        {
+            materias = bd.Materia.ToList();
+        }
+        return View(materias);
+    }
+
     public ActionResult NuevoExpediente()
     {
             

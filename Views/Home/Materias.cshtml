@@ -1,0 +1,38 @@
+@model IEnumerable<ColegioSanJose.Models.DB.Materia>
+@{
+    ViewData["Title"] = "Materias";
+}
+
+<h1>Materias</h1>
+
+<div class="row">
+     <div class="col-md-12">
+         <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre Materia</th>
+                    <th scope="col">Docente</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var materia in Model)
+                {
+                    <tr>
+                        <td>@materia.MateriaId</td>
+                        <td>@materia.NombreMateria</td>
+                        <td>@materia.Docente</td>
+                        <td>
+                            <a class="btn btn-sm btn-secondary" asp-action="EditarMateria" asp-route-id="@materia.MateriaId">Editar</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-danger" asp-action="EliminarMateria" asp-route-id="@materia.MateriaId">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+         </table>
+     </div>
+</div>
