@@ -35,7 +35,7 @@
                             <a class="btn btn-sm btn-secondary" asp-action="EditarAlumno" asp-route-id="@alumno.AlumnoId">Editar</a>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarAlumnoModal" data-alumno-id="@alumno.AlumnoId" data-alumno-nombre="@alumno.Nombre">Eliminar</button>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarAlumnoModal" data-alumno-id="@alumno.AlumnoId" data-alumno-nombre="@alumno.Nombre" data-alumno-apellido="@alumno.Apellido">Eliminar</button>
                         </td>
                     </tr>
                 }
@@ -70,8 +70,10 @@
             var button = event.relatedTarget;
             var alumnoId = button.getAttribute('data-alumno-id');
             var alumnoNombre = button.getAttribute('data-alumno-nombre');
+            var alumnoApellido = button.getAttribute('data-alumno-apellido');
             
             document.getElementById('alumnoNombre').textContent = alumnoNombre;
+            document.getElementById('alumnoApellido').textContent = alumnoApellido;
             
             var form = document.getElementById('eliminarForm');
             form.action = '/Home/EliminarAlumno/' + alumnoId;
