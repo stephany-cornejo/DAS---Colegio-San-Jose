@@ -416,11 +416,27 @@ public class HomeController : Controller
     }
     public IActionResult Estadisticas()
     {
+        var model = new EstadisticasViewModel();
+        
         using (var db = new ColegioSanJoseContext())
         {
-                
+            model.TotalAlumnos = db.Alumnos.Count();
+            model.TotalMaterias = db.Materia.Count();
+            model.TotalExpedientes = db.Expedientes.Count();
+            
+            model.PromedioGeneral = db.Expedientes.Any() ? db.Expedientes.Average(e => e.NotaFinal) : 0;
+            
+            model.AlumnosPromedio = db.Alumnos
+                .Select(a => new AlumnoPromedioViewModel
+                {
+                    NombreCompleto = a.Nombre + " " + a.Apellido,
+                    Promedio = a.Expedientes.Any() ? a.Expedientes.Average(e => e.NotaFinal) : 0
+                })
+                .OrderByDescending(x => x.Promedio)
+                .ToList();
         }
-        return View();
+        
+        return View(model);
     }
 
     public IActionResult Privacy()

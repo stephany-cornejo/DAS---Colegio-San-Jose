@@ -1,0 +1,125 @@
+@using ColegioSanJose.Models.ViewModels
+@model EstadisticasViewModel
+@{
+    ViewData["Title"] = "Estadísticas";
+}
+
+<h1>Estadísticas</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total de Alumnos</h5>
+                <p class="card-text" style="font-size: 2em;">@Model.TotalAlumnos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total de Materias</h5>
+                <p class="card-text" style="font-size: 2em;">@Model.TotalMaterias</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total de Expedientes</h5>
+                <p class="card-text" style="font-size: 2em;">@Model.TotalExpedientes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title">Promedio General</h5>
+                <p class="card-text" style="font-size: 2em;">@Model.PromedioGeneral.ToString("F2")</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Promedio de Notas por Alumno</h5>
+                <canvas id="alumnoPromedioChart" style="height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Detalle de Promedios</h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Alumno</th>
+                            <th scope="col">Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var alumno in Model.AlumnosPromedio)
+                        {
+                            <tr>
+                                <td>@alumno.NombreCompleto</td>
+                                <td>@alumno.Promedio.ToString("F2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        const alumnoLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AlumnosPromedio.Select(x => x.NombreCompleto).ToList()));
+        const alumnoPromedios = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AlumnosPromedio.Select(x => x.Promedio).ToList()));
+
+        const ctx = document.getElementById('alumnoPromedioChart').getContext('2d');
+        const alumnoPromedioChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: alumnoLabels,
+                datasets: [{
+                    label: 'Promedio de Notas',
+                    data: alumnoPromedios,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: {
+                            display: true,
+                            text: 'Nota'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+}
