@@ -33,6 +33,8 @@ public partial class ColegioSanJoseContext : DbContext
 
             entity.ToTable("ALumno");
 
+            entity.Property(e => e.AlumnoId).UseIdentityColumn();
+
             entity.Property(e => e.Apellido)
                 .HasMaxLength(50)
                 .IsUnicode(false);
