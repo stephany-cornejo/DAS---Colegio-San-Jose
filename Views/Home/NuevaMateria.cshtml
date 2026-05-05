@@ -1,0 +1,20 @@
+@model ColegioSanJose.Models.DB.Materia
+@{
+    ViewData["Title"] = "Nueva Materia";
+}
+
+<h1>Nueva Materia</h1>
+
+@using (Html.BeginForm("NuevaMateria", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.NombreMateria)
+        @Html.TextBoxFor(m => m.NombreMateria, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Docente)
+        @Html.TextBoxFor(m => m.Docente, new { @class = "form-control" })
+    </div>
+    <input type="submit" value="Crear" class="btn btn-primary" />
+    <a href="@Url.Action("Materias", "Home")" class="btn btn-secondary">Cancelar</a>
+}

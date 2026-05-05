@@ -49,6 +49,100 @@ public class HomeController : Controller
         return View(materias);
     }
 
+    public ActionResult NuevaMateria()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public ActionResult NuevaMateria(Materia model)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+                {
+                    db.Materia.Add(model);
+                    db.SaveChanges();
+                    return RedirectToAction("Materias");
+                }
+            }
+            return View(model);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public IActionResult EditarMateria(int id)
+    {
+        Materia model = new Materia();
+
+        using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+        {
+            var materia = db.Materia.FirstOrDefault(m => m.MateriaId == id);
+            if (materia == null)
+            {
+                return NotFound();
+            }
+            model = materia;
+        }
+        return View("EditarMaterias", model);
+    }
+
+    [HttpPost]
+    public IActionResult ActualizarMateria(Materia model)
+    {
+        try
+        {
+            using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+            {
+                var materia = db.Materia.FirstOrDefault(m => m.MateriaId == model.MateriaId);
+
+                if (materia != null)
+                {
+                    materia.NombreMateria = model.NombreMateria;
+                    materia.Docente = model.Docente;
+
+                    db.SaveChanges();
+                    return RedirectToAction("Materias");
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult EliminarMateria(int id)
+    {
+        using (ColegioSanJoseContext db = new ColegioSanJoseContext())
+        {
+            try
+            {
+                var materia = db.Materia.Find(id);
+                if (materia != null)
+                {
+                    db.Materia.Remove(materia);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        return RedirectToAction("Materias");
+    }
+
     public ActionResult NuevoExpediente()
     {
             

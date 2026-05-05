@@ -1,26 +1,19 @@
-@model ColegioSanJose.Models.DB.Expediente
+@model ColegioSanJose.Models.DB.Materia
 @{
- ViewData["Title"] = "Editar Materias";
+ ViewData["Title"] = "Editar Materia";
 }
-<h1>Editar Materias</h1>
-@using (Html.BeginForm("ActualizarMaterias", "Home", FormMethod.Post))
+<h1>Editar Materia</h1>
+@using (Html.BeginForm("ActualizarMateria", "Home", FormMethod.Post))
 {
- @Html.HiddenFor(m => m.ExtpedienteId)
+ @Html.HiddenFor(m => m.MateriaId)
  <div class="form-group">
- @Html.Label("Alumno")
- <input class="form-control" value="@Model.Alumno?.Nombre @Model.Alumno?.Apellido" disabled />
+ @Html.LabelFor(m => m.NombreMateria)
+ @Html.TextBoxFor(m => m.NombreMateria, new { @class = "form-control" })
  </div>
  <div class="form-group">
- @Html.Label("Materia")
- <input class="form-control" value="@Model.Materia?.NombreMateria" disabled />
- </div>
- <div class="form-group">
- @Html.LabelFor(m => m.NotaFinal)
- @Html.TextBoxFor(m => m.NotaFinal, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "10" })
- </div>
- <div class="form-group">
- @Html.LabelFor(m => m.Observaciones)
- @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control", rows =3 })
+ @Html.LabelFor(m => m.Docente)
+ @Html.TextBoxFor(m => m.Docente, new { @class = "form-control" })
  </div>
  <input type="submit" value="Actualizar" class="btn btn-primary" />
+ <a href="@Url.Action("Materias", "Home")" class="btn btn-secondary">Cancelar</a>
 }
