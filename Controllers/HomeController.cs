@@ -121,16 +121,22 @@ public class HomeController : Controller
         }
     }
 
-    [HttpGet]
+    [HttpPost]
     public IActionResult EliminarMateria(int id)
     {
         using (ColegioSanJoseContext db = new ColegioSanJoseContext())
         {
             try
             {
-                var materia = db.Materia.Find(id);
+                var materia = db.Materia.FirstOrDefault(m => m.MateriaId == id);
                 if (materia != null)
                 {
+                    var expedientes = db.Expedientes.Where(e => e.MateriaId == id).ToList();
+                    foreach (var expediente in expedientes)
+                    {
+                        db.Expedientes.Remove(expediente);
+                    }
+                    
                     db.Materia.Remove(materia);
                     db.SaveChanges();
                 }
