@@ -5,6 +5,24 @@
 
 <h1>Nuevo Alumno</h1>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    @if (ViewData.ModelState.Values.Any(v => v.Errors.Any(e => e.ErrorMessage.Contains("Registro ya existente"))))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> Registro ya existente. Edite o cree uno nuevo.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> Todos los campos son obligatorios.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+
 @using (Html.BeginForm("NuevoAlumno", "Home", FormMethod.Post))
 {
     <div class="form-group">
