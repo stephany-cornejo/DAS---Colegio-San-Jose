@@ -134,3 +134,4 @@ C:\Users\DELL\Documents\UDB\DAS941\Desafio2\ColegioSanJose\obj\Debug\net8.0\refi
 C:\Users\DELL\Documents\UDB\DAS941\Desafio2\ColegioSanJose\obj\Debug\net8.0\ColegioSanJose.pdb
 C:\Users\DELL\Documents\UDB\DAS941\Desafio2\ColegioSanJose\obj\Debug\net8.0\ColegioSanJose.genruntimeconfig.cache
 C:\Users\DELL\Documents\UDB\DAS941\Desafio2\ColegioSanJose\obj\Debug\net8.0\ref\ColegioSanJose.dll
+C:\Users\DELL\Documents\UDB\DAS941\Desafio2\ColegioSanJose\obj\Debug\net8.0\ColegioSanJose.sourcelink.json
