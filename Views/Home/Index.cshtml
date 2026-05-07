@@ -34,7 +34,7 @@
                             <a class="btn btn-sm btn-secondary" asp-action="Editar" asp-route-id="@d.ExtpedienteId">Editar</a>
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-danger" asp-action="Eliminar" asp-route-d="@d.ExtpedienteId">Eliminar</a>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarExpedienteModal" data-id="@d.ExtpedienteId">Eliminar</button>
                         </td>
                     </tr>
                 }
@@ -42,3 +42,30 @@
          </table>
      </div>
 </div>
+
+<div class="modal fade" id="eliminarExpedienteModal" tabindex="-1" aria-labelledby="eliminarExpedienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro de que desea eliminar este expediente?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger" id="eliminarExpedienteBtn">Aceptar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const eliminarExpedienteModal = document.getElementById('eliminarExpedienteModal');
+    eliminarExpedienteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const eliminarBtn = document.getElementById('eliminarExpedienteBtn');
+        eliminarBtn.href = '@Html.Raw(Url.Action("Eliminar", "Home"))' + '?d=' + id;
+    });
+</script>
